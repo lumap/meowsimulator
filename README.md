@@ -1,38 +1,29 @@
-# create-svelte
+# MeowSimulator
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A project for me to learn Svelte, SvelteKit, TailwindCSS, MongoDB and Lucia. Not a
+multi-million dollar project tho. :(
 
-## Creating a project
+## Running
+### Requirements
+- A MongoDB server (atlas is good enough for this)
+- Node.js
+- Two braincells (minimum)
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Installation
+1. Clone the repository
+2. Run `npm install`
+3. Rename `.env.example` to `.env` and set MONGODB_URI to your MongoDB URI
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### Running
+- `npm run dev` to run the development server
+- `npm run build` to build the project
+- `npm run preview` to preview the built project
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+## Goals
+- All users can see the home page, the about page and the login/register page
+- Logged in users can access global chat, send a meow, see a live chat of all meows sent
+- Private channels (only accessible through a link)
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## History
+As of August 1st, the goal of this project was to have a SvelteKit app with Lucia, and a working
+username/password auth system. I plan to support passkeys, but that's for another day.
