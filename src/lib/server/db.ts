@@ -1,5 +1,5 @@
 //// MONGODB
-import { Collection, MongoClient } from 'mongodb';
+import { type Collection, MongoClient } from 'mongodb';
 import { env } from '$env/dynamic/private';
 
 const client = new MongoClient(env.MONGODB_URI);

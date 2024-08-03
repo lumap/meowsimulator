@@ -7,8 +7,12 @@ on:
 jobs:
   format:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -18,7 +22,6 @@ jobs:
       - name: Format code
         run: npm run format
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "ci: format code with Prettier"
-          branch: ${{ github.head_ref }}
