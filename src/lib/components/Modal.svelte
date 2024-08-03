@@ -27,46 +27,45 @@ A simple modal that can display any HTML you throw at it. Comes with animations 
 -->
 
 <script lang="ts">
-    export let showModal: boolean;
-    
-    let className = "";
-    export { className as class };
-    
+	export let showModal: boolean;
 
-    let dialog: HTMLDialogElement; // Reference to the dialog element. We'll execute functions on it.
-    let closing = false; // Used to add animations for modal close
+	let className = '';
+	export { className as class };
 
-    const escToClose = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-            e.preventDefault(); // By default, it insta closes the dialog. We don't want that.
-            showModal = false;
-        }
-    };
+	let dialog: HTMLDialogElement; // Reference to the dialog element. We'll execute functions on it.
+	let closing = false; // Used to add animations for modal close
 
-    $: if (dialog) {
-        if (showModal) {
-            // Open the dialog with the -in animations
-            dialog.showModal();
-            window.addEventListener("keydown", escToClose);
-        } else {
-            closing = true; // Swap to the --out animations and start them
-            window.removeEventListener("keydown", escToClose);
-            setTimeout(() => {
-                closing = false; // Reset the animations, in case we need to open the modal again
-                dialog.close(); // Actually close it
-            }, 200); // 200ms delay set in ./tailwind.config.ts
-        }
-    }
+	const escToClose = (e: KeyboardEvent) => {
+		if (e.key === 'Escape') {
+			e.preventDefault(); // By default, it insta closes the dialog. We don't want that.
+			showModal = false;
+		}
+	};
+
+	$: if (dialog) {
+		if (showModal) {
+			// Open the dialog with the -in animations
+			dialog.showModal();
+			window.addEventListener('keydown', escToClose);
+		} else {
+			closing = true; // Swap to the --out animations and start them
+			window.removeEventListener('keydown', escToClose);
+			setTimeout(() => {
+				closing = false; // Reset the animations, in case we need to open the modal again
+				dialog.close(); // Actually close it
+			}, 200); // 200ms delay set in ./tailwind.config.ts
+		}
+	}
 </script>
 
 <dialog
-    bind:this={dialog}
-    class="p-8 rounded-md"
-    class:className
-    class:animate-zoom-in={!closing}
-    class:animate-zoom-out={closing}
-    class:backdrop:animate-fade-in={!closing}
-    class:backdrop:animate-fade-out={closing}
+	bind:this={dialog}
+	class="p-8 rounded-md"
+	class:className
+	class:animate-zoom-in={!closing}
+	class:animate-zoom-out={closing}
+	class:backdrop:animate-fade-in={!closing}
+	class:backdrop:animate-fade-out={closing}
 >
-    <slot />
+	<slot />
 </dialog>

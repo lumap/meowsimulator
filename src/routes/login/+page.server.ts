@@ -1,34 +1,34 @@
-import { lucia } from "$lib/server/auth";
-import { fail, redirect } from "@sveltejs/kit";
-import { verify } from "@node-rs/argon2";
+import { lucia } from '$lib/server/auth';
+import { fail, redirect } from '@sveltejs/kit';
+import { verify } from '@node-rs/argon2';
 
-import type { Actions } from "./$types";
-import { User } from "$lib/server/db";
+import type { Actions } from './$types';
+import { User } from '$lib/server/db';
 
 export const actions: Actions = {
 	default: async (event) => {
 		const formData = await event.request.formData();
-		const username = formData.get("username");
-		const password = formData.get("password");
+		const username = formData.get('username');
+		const password = formData.get('password');
 
 		if (
-			typeof username !== "string" ||
+			typeof username !== 'string' ||
 			username.length < 3 ||
 			username.length > 31 ||
 			!/^[a-z0-9_-]+$/.test(username)
 		) {
 			return fail(400, {
-				message: "Invalid username"
+				message: 'Invalid username'
 			});
 		}
-		if (typeof password !== "string" || password.length < 6 || password.length > 255) {
+		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
 			return fail(400, {
-				message: "Invalid password"
+				message: 'Invalid password'
 			});
 		}
 
 		const existingUser = await User.findOne({ username: username.toLowerCase() });
-		
+
 		// const existingUser = await db
 		// 	.table("username")
 		// 	.where("username", "=", username.toLowerCase())
@@ -44,11 +44,11 @@ export const actions: Actions = {
 			// it is crucial your implementation is protected against brute-force attacks with login throttling etc.
 			// If usernames are public, you may outright tell the user that the username is invalid.
 			return fail(400, {
-				message: "Incorrect username or password"
+				message: 'Incorrect username or password'
 			});
 		}
 
-		const validPassword = await verify(existingUser.password_hash || "", password, {
+		const validPassword = await verify(existingUser.password_hash || '', password, {
 			memoryCost: 19456,
 			timeCost: 2,
 			outputLen: 32,
@@ -56,17 +56,17 @@ export const actions: Actions = {
 		});
 		if (!validPassword) {
 			return fail(400, {
-				message: "Incorrect username or password"
+				message: 'Incorrect username or password'
 			});
 		}
 
 		const session = await lucia.createSession(existingUser._id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: ".",
+			path: '.',
 			...sessionCookie.attributes
 		});
 
-		redirect(302, "/");
+		redirect(302, '/');
 	}
 };
