@@ -7,7 +7,7 @@ export default defineConfig({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}'],
 		coverage: {
-		  reporter: ['text', 'json-summary'],
+			reporter: ['text', 'json-summary'],
 			reportOnFailure: true
 		}
 	}
